@@ -50,7 +50,7 @@ paths:
       tags:
         - Account Admin Operations
       summary: Get list of all new admins for this account
-      operationId: getAllNewAccountAdminUsingGET_1
+      operationId: getAllNewAccountAdminUsingGET
       consumes:
         - application/json
       produces:
@@ -78,7 +78,7 @@ paths:
       tags:
         - Account Admin Operations
       summary: Invite a new admin for this account
-      operationId: addAdminUsingPOST
+      operationId: addAdminUsingPOST_1
       consumes:
         - application/json
       produces:
@@ -168,7 +168,7 @@ paths:
       tags:
         - Campaign CRUD operations
       summary: Create new Campaign
-      operationId: createUsingPOST
+      operationId: createUsingPOST_1
       consumes:
         - application/json
       produces:
@@ -241,7 +241,7 @@ paths:
       tags:
         - Campaign CRUD operations
       summary: Update the Campaign
-      operationId: updateUsingPUT
+      operationId: updateUsingPUT_1
       consumes:
         - application/json
       produces:
@@ -282,7 +282,7 @@ paths:
       tags:
         - Campaign CRUD operations
       summary: Delete the Campaign
-      operationId: deleteUsingDELETE_1
+      operationId: deleteUsingDELETE
       consumes:
         - application/json
       produces:
@@ -321,7 +321,7 @@ paths:
       tags:
         - Campaign CRUD operations
       summary: Activate the Campaign
-      operationId: activateUsingPUT_1
+      operationId: activateUsingPUT
       consumes:
         - application/json
       produces:
@@ -362,7 +362,7 @@ paths:
       tags:
         - Campaign CRUD operations
       summary: Deactivate the Campaign
-      operationId: deactivateUsingPUT
+      operationId: deactivateUsingPUT_1
       consumes:
         - application/json
       produces:
@@ -2048,7 +2048,7 @@ paths:
       tags:
         - Channel Stats
       summary: All the Channel Stats
-      operationId: overallStatsUsingPOST
+      operationId: overallStatsUsingPOST_1
       consumes:
         - application/json
       produces:
@@ -2343,6 +2343,51 @@ paths:
           description: Not Found
       security:
         - Authorization: []
+    get:
+      tags:
+        - Funnel CRUD operations
+      summary: Get list of all funnels for a given account
+      operationId: getFunnelsUsingGET_1
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: licenseCode
+          in: path
+          description: licenseCode
+          required: true
+          type: string
+        - name: pageNo
+          in: query
+          description: pageNo
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: pageSize
+          required: false
+          type: integer
+          format: int32
+        - name: sort
+          in: query
+          description: sort
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponseDtoÂ«PageÂ«FunnelÂ»Â»'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Authorization: []
   '/v2/accounts/{licenseCode}/funnels/{funnelEId}':
     get:
       tags:
@@ -2404,6 +2449,10 @@ paths:
           schema:
             $ref: '#/definitions/Funnel'
       responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponseDtoÂ«FunnelÂ»'
         '201':
           description: Created
           schema:
@@ -2454,7 +2503,7 @@ paths:
       tags:
         - Funnel CRUD operations
       summary: Clone Funnel for a given Funnel Id
-      operationId: cloneUsingPOST
+      operationId: cloneUsingPOST_1
       consumes:
         - application/json
       produces:
@@ -2524,6 +2573,45 @@ paths:
           description: Forbidden
       security:
         - Authorization: []
+  '/v2/accounts/{licenseCode}/campaigns/{experimentEncodedId}/validate':
+    post:
+      tags:
+        - Campaign CRUD operations
+      summary: validate
+      operationId: validateUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: licenseCode
+          in: path
+          description: licenseCode
+          required: true
+          type: string
+        - name: experimentEncodedId
+          in: path
+          description: experimentEncodedId
+          required: true
+          type: string
+        - name: type
+          in: query
+          description: type
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApiResponseDto'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
 definitions:
   ExperimentJobSentStatsDto:
     type: object
@@ -4182,6 +4270,7 @@ definitions:
         enum:
           - DELETE
           - ACTIVE
+          - DELETED
       steps:
         type: array
         items:
@@ -4205,6 +4294,40 @@ definitions:
     properties:
       data:
         type: object
+      message:
+        type: string
+      status:
+        type: string
+      statusCode:
+        type: string
+  PageÂ«FunnelÂ»:
+    type: object
+    properties:
+      ascending:
+        type: boolean
+      contents:
+        type: array
+        items:
+          $ref: '#/definitions/Funnel'
+      numberOfPages:
+        type: integer
+        format: int32
+      pageNo:
+        type: integer
+        format: int32
+      pageSize:
+        type: integer
+        format: int32
+      sortBy:
+        type: string
+      totalCount:
+        type: integer
+        format: int32
+  ApiResponseDtoÂ«PageÂ«FunnelÂ»Â»:
+    type: object
+    properties:
+      data:
+        $ref: '#/definitions/PageÂ«FunnelÂ»'
       message:
         type: string
       status:
