@@ -2308,7 +2308,7 @@ paths:
           description: Not Found
       security:
         - Authorization: []
-  '/v2/accounts/{licenseCode}/funnel':
+  '/v2/accounts/{licenseCode}/funnels':
     post:
       tags:
         - Funnel CRUD operations
@@ -2343,7 +2343,7 @@ paths:
           description: Not Found
       security:
         - Authorization: []
-  '/v2/accounts/{licenseCode}/funnel/{funnelEId}':
+  '/v2/accounts/{licenseCode}/funnels/{funnelEId}':
     get:
       tags:
         - Funnel CRUD operations
@@ -2449,7 +2449,7 @@ paths:
           description: Forbidden
       security:
         - Authorization: []
-  '/v2/accounts/{licenseCode}/funnel/{funnelEId}/clone':
+  '/v2/accounts/{licenseCode}/funnels/{funnelEId}/clone':
     post:
       tags:
         - Funnel CRUD operations
@@ -2485,7 +2485,7 @@ paths:
           description: Not Found
       security:
         - Authorization: []
-  '/v2/accounts/{licenseCode}/funnel/{funnelEId}/steps/{stepEId}':
+  '/v2/accounts/{licenseCode}/funnels/{funnelEId}/steps/{stepEId}':
     delete:
       tags:
         - Funnel CRUD operations
